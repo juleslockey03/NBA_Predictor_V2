@@ -1,0 +1,22 @@
+[project]
+name = "nba-predictor-v2"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Jules", email = "juleslockey2003@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "duckdb>=1.5.6",
+    "nba-api>=1.11.4",
+    "pandas>=3.0.6",
+    "python-dotenv>=1.2.4",
+]
+
+[project.scripts]
+nba-predictor-v2 = "nba_predictor_v2:main"
+
+[build-system]
+requires = ["uv_build>=0.13.4,<0.14.0"]
+build-backend = "uv_build"

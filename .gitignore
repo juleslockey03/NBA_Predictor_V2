@@ -1,0 +1,21 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Secrets: never commit. .env.example (no values) is committed instead
+.env
+
+# macOS clutter
+.DS_Store
+
+# Local DuckDB warehouse, rebuilt by the backfill
+data/
+*.duckdb
+*.duckdb.wal
