@@ -1,0 +1,65 @@
+"""Load NBA team box scores from stats.nba.com into the raw DuckDB table."""
+
+import sys
+import duckdb
+import pandas as pd
+from nba_api.stats.endpoints import leaguegamefinder
+
+DB_PATH = "data/nba.duckdb"
+
+def create_table(con):
+    con.execute("""
+            CREATE TABLE IF NOT EXISTS raw_team_games(
+                SEASON_ID   VARCHAR,
+                TEAM_ID     VARCHAR,
+                TEAM_ABBREVIATION VARCHAR,
+                TEAM_NAME   VARCHAR,
+                GAME_ID     VARCHAR,
+                GAME_DATE   DATE,
+                MATCHUP     VARCHAR,
+                WL          VARCHAR,
+                MIN         INTEGER,
+                PTS         INTEGER,
+                FGM         INTEGER,
+                FGA         INTEGER,
+                FG_PCT      DOUBLE,
+                FG3M        INTEGER,
+                FG3A        INTEGER,
+                FG3_PCT     DOUBLE,
+                FTM         INTEGER,
+                FTA         INTEGER,
+                FT_PCT      DOUBLE,
+                OREB        INTEGER,
+                DREB        INTEGER,
+                REB         INTEGER,
+                AST         INTEGER,
+                STL         INTEGER,
+                BLK         INTEGER,
+                TOV         INTEGER,
+                PF          INTEGER,
+                PLUS_MINUS  INTEGER,
+                INGESTED_AT TIMESTAMP,
+                PRIMARY KEY (GAME_ID, TEAM_ID)
+            )
+            """)
+
+def fetch_games(date):
+    finder = leaguegamefinder.LeagueGameFinder(
+        league_id_nullable="00",
+        season_type_nullable="Regular Season",
+        date_from_nullable=date,
+        date_to_nullable=date,
+    )
+    df = finder.get_data_frames()[0]
+    df['TEAM_ID'] = df['TEAM_ID'].astype(str)
+    df['INGESTED_AT'] = pd.Timestamp.now()
+    return df
+
+def load_games(con, df):
+    con.execute("INSERT OR REPLACE INTO raw_team_games BY NAME SELECT * FROM df")
+
+def main():
+    pass
+
+if __name__ == "__main__":
+    main()
