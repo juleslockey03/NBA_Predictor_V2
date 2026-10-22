@@ -59,7 +59,14 @@ def load_games(con, df):
     con.execute("INSERT OR REPLACE INTO raw_team_games BY NAME SELECT * FROM df")
 
 def main():
-    pass
+    date = sys.argv[1]
+    con = duckdb.connect(DB_PATH)
+    create_table(con)
+    df = fetch_games(date)
+    load_games(con, df)
+    total = con.sql("SELECT COUNT(*) FROM raw_team_games").fetchone()[0]
+    print(f"Loaded {len(df)} rows for {date}, table now has {total} rows")
+    con.close()
 
 if __name__ == "__main__":
     main()
