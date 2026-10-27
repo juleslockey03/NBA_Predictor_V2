@@ -4,8 +4,8 @@ import sys
 import duckdb
 import pandas as pd
 from nba_api.stats.endpoints import leaguegamefinder
+from nba_predictor_v2.config import DB_PATH
 
-DB_PATH = "data/nba.duckdb"
 
 def create_table(con):
     con.execute("""
