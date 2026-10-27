@@ -19,3 +19,6 @@ wheels/
 data/
 *.duckdb
 *.duckdb.wal
+
+# Scheduler output, specific to this machine
+logs/

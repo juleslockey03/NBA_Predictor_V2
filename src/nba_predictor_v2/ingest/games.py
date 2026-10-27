@@ -59,7 +59,11 @@ def load_games(con, df):
     con.execute("INSERT OR REPLACE INTO raw_team_games BY NAME SELECT * FROM df")
 
 def main():
-    date = sys.argv[1]
+    if len(sys.argv) > 1:
+        date = sys.argv[1]
+    else:
+        yesterday = pd.Timestamp.now(tz='America/New_York') - pd.Timedelta(days=1)
+        date = yesterday.strftime('%m/%d/%Y')
     con = duckdb.connect(DB_PATH)
     create_table(con)
     df = fetch_games(date)
