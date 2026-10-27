@@ -38,7 +38,7 @@ def create_table(con):
                 TOV         INTEGER,
                 PF          INTEGER,
                 PLUS_MINUS  INTEGER,
-                INGESTED_AT TIMESTAMP,
+                INGESTED_AT TIMESTAMPTZ,
                 PRIMARY KEY (GAME_ID, TEAM_ID)
             )
             """)
@@ -52,7 +52,7 @@ def fetch_games(date):
     )
     df = finder.get_data_frames()[0]
     df['TEAM_ID'] = df['TEAM_ID'].astype(str)
-    df['INGESTED_AT'] = pd.Timestamp.now()
+    df['INGESTED_AT'] = pd.Timestamp.now(tz="UTC")
     return df
 
 def load_games(con, df):
